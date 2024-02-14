@@ -11,8 +11,13 @@ Latte Rorschach is a web page where visitors are presented with an image of latt
 - **Chelsea Mensah**: Ckm20a@fsu.edu
 - **Alec Tremblay**: abt20c@fsu.edu
 
+## User Manual
 
-## Workload Split
+
+## Libraries & Resources
+
+
+## Separation of Work
 ### Backend:
  - Django Server (web backend and auth):
     - Alec, Dominic, Aaron, Chelsea, Ethan
