@@ -14,27 +14,32 @@ Latte Rorschach is a web page where visitors are presented with an image of latt
 
 ## Workload Split
 ### Backend:
- - Django Server (web backend and auth): Alec, Dominic, Aaron, Chelsea, Ethan
- - SQL Database: Ethan, Aaron
- - Latte CDN: Ethan, Dominic
+ - Django Server (web backend and auth):
+    - Alec, Dominic, Aaron, Chelsea, Ethan
+ - SQL Database:
+    - Ethan, Aaron
+ - Latte CDN:
+    - Ethan, Dominic
 
 ### Frontend:
- - React: Chelsea, Alec
- - HTML/CSS: Alec, Aaron
+ - React:
+    - Chelsea, Alec
+ - HTML/CSS:
+    - Alec, Aaron
 
 
 ## Requirement Fulfillment
 ### Information Management
-SQL Database that contains:
+#### SQL Database that contains:
  - Per latte
     - Pointer to the image of the latte in the CDN
     - Interpretations, their votes
  - Per user (if logged in)
     - Name
     - Login hash
-CDN that contains:
+#### CDN that contains:
  - Latte images
-Role Based Access Control
+#### Role Based Access Control:
  - Standard users:
     - Don't need to log in, but can
  - Admins:
