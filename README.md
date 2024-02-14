@@ -5,11 +5,11 @@ Latte Rorschach is a web page where visitors are presented with an image of latt
 
 
 ### Team Members
-Ethan Flot, EPF19
-Dominic Miller, dgm21
-Aaron Garman, aag15b
-Chelsea Mensah, Ckm20a
-Alec Tremblay, abt20c
+**Ethan Flot**: epf19@fsu.edu
+**Dominic Miller**: dgm21@fsu.edu
+**Aaron Garman**: aag15b@fsu.edu
+**Chelsea Mensah**: Ckm20a@fsu.edu
+**Alec Tremblay**: abt20c@fsu.edu
 
 
 ### Workload Split
