@@ -12,10 +12,10 @@ Latte Rorschach is a web page where visitors are presented with an image of latt
 - **Alec Tremblay**: abt20c@fsu.edu
 
 ## User Manual
-
+[empty]
 
 ## Libraries & Resources
-
+[empty]
 
 ## Separation of Work
 ### Backend:
