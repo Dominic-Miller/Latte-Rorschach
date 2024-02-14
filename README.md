@@ -4,13 +4,6 @@
 Latte Rorschach is a web page where visitors are presented with an image of latte art for that day. Users can then type an interpretation of the latte and upon submission, they are presented with other users’ comments and can upvote, downvote, or reply to their interpretations. Optionally, they can create an account to track their contributions. There will also be a gallery of all past daily lattes and their top interpretations. When a user gets a top comment of the day, they receive a bonus upvote they can use on future lattes. Admins can remove inappropriate comments and modify user status.
 
 
-## Team Members
-- **Ethan Flot**: epf19@fsu.edu
-- **Dominic Miller**: dgm21@fsu.edu
-- **Aaron Garman**: aag15b@fsu.edu
-- **Chelsea Mensah**: Ckm20a@fsu.edu
-- **Alec Tremblay**: abt20c@fsu.edu
-
 ## User Manual
 [empty]
 
