@@ -55,6 +55,8 @@ def register():
 # Login page
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    # Start with no login error
+    error = None 
     # Login if POST
     if request.method == 'POST':
         # Get the username and password and check the database for it
@@ -63,11 +65,14 @@ def login():
         user = query_db('SELECT * FROM users WHERE username = ?', [username], one=True)
         if user and check_password_hash(user['password'], password):
             session['username'] = username
-            # Redirect to the homepage for successful login
+            # Redirect to home page if successful login
             return redirect(url_for('home'))
-        flash('Invalid username or password.')
+        else:
+            # If not found in database, set our error message
+            error = 'Invalid username or password.' 
     # Take to login page if GET
-    return render_template('login.html')
+    return render_template('login.html', error=error)
+
 
 # Function to logout and redirect the user to the login front page
 @app.route('/logout')
