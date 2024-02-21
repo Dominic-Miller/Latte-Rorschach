@@ -5,7 +5,19 @@ Latte Rorschach is a web page where visitors are presented with an image of latt
 
 
 ## User Manual
-[empty]
+### Requirements
+- **Compiler**: `python3` for Python
+
+### Compilation
+To setup the empty database:
+```bash
+python3 setup.py
+```
+To run the program locally:
+```bash
+python3 app.py
+```
+This will run the program in the web browser displayed (looks like an IP address)
 
 ## Libraries & Resources
 [empty]
