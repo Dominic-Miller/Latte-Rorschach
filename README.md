@@ -21,7 +21,7 @@ This will run the program in the web browser displayed (looks like an IP address
 
 ## Separation of Work
 ### Backend:
- - Django Server (web backend and auth):
+ - Django Server & Flask:
     - Alec, Dominic, Aaron, Chelsea, Ethan
  - SQL Database:
     - Ethan, Aaron
@@ -32,4 +32,4 @@ This will run the program in the web browser displayed (looks like an IP address
  - React:
     - Chelsea, Alec
  - HTML/CSS:
-    - Alec, Aaron
+    - Alec, Aaron, Dominic
