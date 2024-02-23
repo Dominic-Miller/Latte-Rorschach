@@ -19,3 +19,10 @@ We've currently made a simple login page in flask which we'll be remaking with d
 - Historical responses
   - currently, for MVP, we think a datepicker will be the simplest to implement, with the same UI as "Rorschach of the day" below
   - however, depending on the rate of our progress, we would like to implement a scrollable grid view to select previous days
+
+What we plan to complete by next increment:
+- Swap from Flask to Django.
+- Finish the user login system.
+- Finish comment entry page.
+- Finish interpretation viewing page (We will likely save the like system for the final increment).
+- Populate database with sample values.
