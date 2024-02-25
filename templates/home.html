@@ -1,1 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Landing page</title>
+    <style>
+      .center-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        text-align: center;
+      }
 
+      .center-content > * {
+        margin: 20px 0; /* Add a top and bottom margin to all direct children of .center-content */
+      }
+        .large-input, input[type="text"]{ 
+        width: 250px;
+        height: 100px;
+        border: 2px solid grey;
+        }
+
+      .large-input, input[type="submit"] {
+        width: 150px; 
+        height: 40px; 
+        border: 2px solid grey;
+      }
+    
+      .large-input {
+        height: auto; /* Reset the height for the input */
+      }
+      /*style the submit button */
+      input[type="submit"] {
+        width: auto; 
+        margin-top: 30px; 
+      }
+
+      /* Style the form */
+      form {
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+      }
+    </style>
+  </head>
+  <body>
+    <div class="center-content">
+      <h2>RORSCHACH OF THE DAY</h2>
+      <img src="/static/Latte_Art_2.jpeg" alt="Rorschach of the day" style="width:304px;height:228px;">
+      <form action="/response" method="post">
+        <input type="text" name="response" placeholder="What do you see?" class="large-input">
+        <input type="submit" value="Submit">
+      </form>
+    </div>
+  </body>
+</html>

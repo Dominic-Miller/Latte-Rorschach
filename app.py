@@ -11,6 +11,7 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
+
 # Function to query our database
 def query_db(query, args=(), one=False):
     conn = get_db_connection()
@@ -20,17 +21,20 @@ def query_db(query, args=(), one=False):
     conn.commit()
     return (rv[0] if rv else None) if one else rv
 
+
 # The default page upon startup should be the login page
 @app.route('/')
 def index():
     return redirect(url_for('login'))
 
+
 # Homepage for our application after logging in
 @app.route('/home')
 def home():
     if 'username' in session:
-        return f'Hello, {session["username"]}! <br/><a href="/logout">Logout</a>'
+       return render_template('home.html', username=session['username'])
     return redirect(url_for('login'))
+
 
 # Registration page to crate an account
 @app.route('/register', methods=['GET', 'POST'])
@@ -79,6 +83,8 @@ def login():
 def logout():
     session.pop('username', None)
     return redirect(url_for('login'))
+
+
 
 # Main execution function
 if __name__ == '__main__':

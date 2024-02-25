@@ -12,5 +12,17 @@ CREATE TABLE IF NOT EXISTS users (
 );
 ''')
 
+
+# create table  for user responses to be stored 
+conn.execute('''
+             CREATE TABLE IF NOT EXISTS responses (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+             userID INTEGER NOT NULL,
+                response TEXT NOT NULL,
+                FOREIGN KEY (userID) REFERENCES users(id)
+             );
+             ''')
+
+
 print("Users database setup successfully.")
 conn.close()
