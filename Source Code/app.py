@@ -84,7 +84,27 @@ def logout():
     session.pop('username', None)
     return redirect(url_for('login'))
 
+# Route for adding a daily review
+@app.route('/add-daily-review', methods=['GET', 'POST'])
+def add_daily_review():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    # Handle POST requests to save review data
+    if request.method == 'POST':
+        # Process and save review data
 
+        # Redirect back to the home page
+        return redirect(url_for('home'))
+    return render_template('dailyReview.html', username=session['username'])
+
+# Route for reviewing history
+@app.route('/review-history')
+def review_history():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    # Query and pass review history data to the template
+    review_history_data = []
+    return render_template('reviewHistory.html', review_history=review_history_data, username=session['username'])
 
 # Main execution function
 if __name__ == '__main__':
