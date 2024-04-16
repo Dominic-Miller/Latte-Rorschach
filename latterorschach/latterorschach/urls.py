@@ -25,5 +25,5 @@ urlpatterns = [
 ]
 
 urlpatterns += [
-    path('app/', include('app.urls')),
+    path('', include('app.urls')),
 ]
