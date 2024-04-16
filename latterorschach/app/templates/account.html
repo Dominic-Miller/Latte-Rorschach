@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Account Settings</title>
+    <style>
+        
+        p {
+            text-align: center;
+        }
+     
+        .comments-box {
+            border: 1px solid #000;
+            padding: 10px;
+            margin: 10px auto;
+            width: 70%; 
+            height: 70vh; 
+            text-align: center;
+        }
+   
+        .inner-box {
+            border: 1px solid #000;
+            padding: 10px;
+            margin: 10px auto;
+            width: 80%; 
+            height: 80%; 
+        }
+    </style>
+</head>
+<body>
+    <h1>My Account</h1>
+    <p>Total Likes: {{ total_likes }}</p>
+    <div class="comments-box">
+        <h2> My Comments: {{ total_comments }}</h2>
+        <div class="inner-box">
+            <ul id="comments-list">
+
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

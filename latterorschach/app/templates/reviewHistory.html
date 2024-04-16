@@ -1,1 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Review History</title>
+    <style>
+        /* Adds the coffee bean image to the background */
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: #444;
+            background: url('/static/bean-background.jpg') no-repeat center center fixed; 
+            background-size: cover;
+        }
 
+        /* Centers the history box, adds a shadow, and rounds the corners */
+        .history-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            padding: 20px;
+            background: #fffefe;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        /* Styles the heading */
+        h2 {
+            color: #5D4037;
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #f2f2f2;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Code to call the flask app to display all of the review history and images -->
+    <div class="history-box">
+        <h2>Your Review History</h2>
+        <ul>
+            <!-- Replace with actual data once flask app is finished -->
+            {% for review in review_history %}
+                <li>{{ review.date }} - {{ review.response }}</li>
+            {% else %}
+                <li>No reviews found.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

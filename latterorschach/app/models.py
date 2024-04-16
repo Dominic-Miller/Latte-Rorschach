@@ -1,4 +1,5 @@
 from django.db import models
+from django import utils
 import datetime
 import uuid
 
@@ -10,7 +11,7 @@ class Latte(models.Model):
 
     date = models.DateField(max_length=200,
                             unique=True,
-                            default=datetime.date.today())
+                            default=utils.timezone.now)
 
     img_url = models.URLField(help_text="link to image on CDN or public internet")
 

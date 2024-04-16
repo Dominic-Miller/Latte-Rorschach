@@ -1,1 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Daily Review</title>
+    <style>
+      /* Adds the coffee bean image to the background */
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: #444;
+            background: url('static/bean-background.jpg') no-repeat center center fixed; 
+            background-size: cover;
+        }
 
+        /* Centers the content, adds a shadow, and rounds the corners */
+        .center-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            padding: 20px;
+            background: #fffefe;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        /* Styles the heading */
+        h2 {
+            color: #5D4037;
+            margin-bottom: 20px;
+        }
+
+        /* Styles the image to make it responsive and round corners */
+        img {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        /* Styles the review input field */
+        input[type=text] {
+            width: calc(100% - 40px);
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        /* Styles the submit button */
+        input[type=submit] {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        /* Make it so the submit button changes colors when hovered over it */
+        input[type=submit]:hover {
+            background-color: #45a049;
+        }
+
+        form {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+  <!-- Code for the review submission which calls the flask app to save the review -->
+  <div class="center-content">
+    <h2>RORSCHACH OF THE DAY</h2>
+    <img src="{{ latte.img_url }}" alt="Rorschach of the day">
+    <form action="/add-daily-review" method="post">
+        <input type="text" name="response" placeholder="What do you see?" class="large-input">
+        <input type="submit" value="Submit">
+    </form>
+</div>
+</body>
+</html>

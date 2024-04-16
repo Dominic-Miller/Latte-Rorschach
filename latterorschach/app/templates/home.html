@@ -1,1 +1,77 @@
+<!doctype html>
+<html>
+<head>
+<title>Home</title>
+<style>
+  /* Adds the coffee bean image to the background */
+  body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #444;
+    background: url('/static/bean-background.jpg') no-repeat center center fixed; 
+    background-size: cover;
+  }
+  
+  /* Centers the home box, adds a shadow, and rounds the corners */
+  .home-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background: #fffefe;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    width: 300px;
+    text-align: center;
+  }
+  
+  /* Styles the welcome message */
+  h2 {
+    color: #5D4037;
+    margin-bottom: 20px;
+  }
+  
+  /* Styles to boxes to go add a review or check the review history */
+  a {
+    display: inline-block; /* Allows for margin auto to work */
+    width: calc(100% - 40px);
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px auto;
+    text-decoration: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  /* Make it so the buttons change colors when hovered over it */
+  a:hover {
+    background-color: #45a049;
+  }
+  
+  .container {
+    padding: 0;
+  }
+  
+  .container p {
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+  <!-- Code to redirect to the other html pages if clicked -->
+  <div class="home-box">
+    <h2>Welcome, {{ username }}!</h2>
+    <div class="container">
+      <a href="/add-daily-review">Add Daily Review</a>
+      <a href="/review-history">Review History</a>
+      <a href="/interpretation">Top Interpretation of the Day</a>
+      <a href="/account_settings">Account Settings</a>
 
+    </div>
+  </div>
+
+</body>
+</html>
