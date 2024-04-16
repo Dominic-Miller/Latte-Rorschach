@@ -1,5 +1,6 @@
 from django.db import models
 import datetime
+import uuid
 
 # Create your models here.
 
@@ -19,9 +20,9 @@ class Latte(models.Model):
 
     def __str__(self):
         """String for representing the Model object (in Admin site etc.)"""
-        return self.date
+        return str(self.date)
 
-class Interpretation():
+class Interpretation(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4,
                         help_text="Unique ID for this particular interpretation")
     text = models.TextField()
@@ -32,5 +33,6 @@ class Interpretation():
                                blank=True,
                                related_name='replies')
 
-    
-    parent_id = models.UUIDField()
+    latte = models.ForeignKey(Latte,
+                               on_delete=models.CASCADE,
+                               related_name='latte')
