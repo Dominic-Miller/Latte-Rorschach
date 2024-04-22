@@ -67,8 +67,16 @@ def history(request):
     return render(request, 'reviewHistory.html')
     
 def topinterpretations(request):
-    """View function for home page of site."""
-    return render(request, 'topInterpretations.html')
+    latte = Latte.objects.last()
+    interpretations = Interpretation.objects.all().filter(latte=latte)
+    for interp in interpretations:
+        logger.info(interp.text)
+    context = {
+        'latte': latte,
+        'interpretations': [ { "text" : interp.text, "user" : interp.user.username} for interp in interpretations]
+    }
+    template = loader.get_template('topInterpretations.html')
+    return HttpResponse(template.render(context, request))
 
 def menu(request):
     """View function for home page of site."""
