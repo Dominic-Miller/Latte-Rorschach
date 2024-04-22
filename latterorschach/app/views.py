@@ -6,19 +6,31 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, logout, login
 
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 
 import logging
 
 logger = logging.getLogger("django.views")
 
+@csrf_exempt
+@login_required
 def today(request):
-  logger.info(f"{request.user.username} logged in")
-  latte = Latte.objects.last()
-  template = loader.get_template('dailyReview.html')
-  context = {
-    'latte': latte,
-  }
-  return HttpResponse(template.render(context, request))
+    latte = Latte.objects.last()
+    if request.method == 'POST':
+        response = request.POST.get('response')
+        if request.POST.get('response') != "":
+            logger.info(f"{request.user.username} said "
+                        f"\"{response}\" about latte {latte.date}")
+            
+            interpretation = Interpretation.objects.create(user=request.user,
+                                                text=response,
+                                                latte=latte)
+            interpretation.save()
+    template = loader.get_template('dailyReview.html')
+    context = {
+        'latte': latte,
+    }
+    return HttpResponse(template.render(context, request))
 
 @csrf_exempt
 def register(request):
