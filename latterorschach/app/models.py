@@ -51,3 +51,17 @@ class Interpretation(models.Model):
                             null=True,
                             on_delete=models.SET_NULL
                             )
+
+# class Like(models.Model):
+
+#     interpretation = models.ForeignKey(Interpretation,
+#                                on_delete=models.CASCADE,
+#                                null=True,
+#                                blank=True,
+#                                related_name='replies')
+
+#     user = models.ForeignKey(User,
+#                         default=1,
+#                         null=True,
+#                         on_delete=models.SET_NULL
+#                         )
