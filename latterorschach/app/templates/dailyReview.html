@@ -62,6 +62,17 @@
             margin-top: 20px;
         }
 
+        .link-button {
+            width: 100%;
+            background-color: null;
+            color: black;
+            padding: 5%;
+            border: solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
         /* Make it so the submit button changes colors when hovered over it */
         input[type=submit]:hover {
             background-color: #45a049;
@@ -75,12 +86,15 @@
 <body>
   <!-- Code for the review submission which calls the flask app to save the review -->
   <div class="center-content">
-    <h2>RORSCHACH OF THE DAY</h2>
+    <h2>Today's Rorschach Latte</h2>
     <img src="{{ latte.img_url }}" alt="Rorschach of the day">
     <form action="" method="post">
         <input type="text" name="response" placeholder="What do you see?" class="large-input">
         <input type="submit" value="Submit">
     </form>
+        <a href="/topinterpretations">
+            <button class="link-button">Show me what others said</button>
+        </a>
 </div>
 </body>
 </html>

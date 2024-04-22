@@ -26,6 +26,7 @@ def today(request):
                                                 text=response,
                                                 latte=latte)
             interpretation.save()
+            return redirect('topinterpretations')
     template = loader.get_template('dailyReview.html')
     context = {
         'latte': latte,
