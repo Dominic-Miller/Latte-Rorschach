@@ -17,6 +17,12 @@ class Latte(models.Model):
 
     img_url = models.URLField(help_text="link to image on CDN or public internet")
 
+    user = models.ForeignKey(User,
+                             default=1,
+                             null=True,
+                             on_delete=models.SET_NULL
+                             )
+
     def get_absolute_url(self):
         """Returns the url to access a particular language instance."""
         return reverse('latte', args=[str(self.id)])
@@ -39,3 +45,9 @@ class Interpretation(models.Model):
     latte = models.ForeignKey(Latte,
                                on_delete=models.CASCADE,
                                related_name='latte')
+
+    user = models.ForeignKey(User,
+                            default=1,
+                            null=True,
+                            on_delete=models.SET_NULL
+                            )

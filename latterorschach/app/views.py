@@ -12,6 +12,7 @@ import logging
 logger = logging.getLogger("django.views")
 
 def today(request):
+  logger.info(f"{request.user.username} logged in")
   latte = Latte.objects.last()
   template = loader.get_template('dailyReview.html')
   context = {
