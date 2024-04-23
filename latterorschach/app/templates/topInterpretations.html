@@ -106,7 +106,7 @@
                     </div>
                     {% if user.is_authenticated %}
                     <form action="/topinterpretations" method="POST" id="{{ x.inid }}">
-                        <button class="like-button {{ x.liked }}" form="{{ x.inid }}" value="Submit">🤔 {{ x.likes }}</button>
+                        <button class="like-button {{ x.liked }}" title="I find this insightful!" form="{{ x.inid }}" value="Submit">🤔 {{ x.likes }}</button>
                         <input type="hidden" id="inid" name="inid" value="{{ x.inid }}">
                     </form>
                     {% endif %}
