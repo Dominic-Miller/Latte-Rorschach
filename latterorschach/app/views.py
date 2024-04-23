@@ -90,7 +90,7 @@ def menu(request):
         logout(request)
         return redirect('/login') 
     context = {
-        'quote': get_quote(),
+        'quote': get_quote() if request.user.is_authenticated else "You would see some of my miraculous wisdom if you were logged in...",
     }
     template = loader.get_template('home.html')
     return HttpResponse(template.render(context, request))

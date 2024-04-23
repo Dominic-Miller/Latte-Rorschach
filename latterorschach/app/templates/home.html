@@ -123,9 +123,13 @@
       {% if user.is_staff %}
       <a class="gray-a" href="/admin">Admin Settings 🤓</a>
       {% endif %}
+      {% if user.is_authenticated %}
       <form action="" method="post">
         <input type="submit" value="Log Out 😭">
-    </form>
+      </form>
+      {% else %}
+      <a class="green-a" href="/login">Log In 🔑</a>
+      {% endif %}
     </div>
   </div>
 
