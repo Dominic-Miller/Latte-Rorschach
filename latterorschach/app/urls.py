@@ -9,6 +9,7 @@ urlpatterns = [
     path('register', views.register, name='register'),
     path('account', views.account, name='account'),
     path('history', views.history, name='history'),
+    path('addlatte', views.add_latte, name='addlatte'),
     path('topinterpretations', views.topinterpretations, name='topinterpretations'),
     path('accountsettings', views.accountsettings, name='accountsettings'),
     path('changeusername', views.changeusername, name='changeusername'),

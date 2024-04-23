@@ -72,6 +72,11 @@ def history(request):
     return render(request, 'reviewHistory.html')
 
 @csrf_exempt
+def add_latte(request):
+    """Add new latte object to database"""
+    return render(request, 'addlatte.html')
+
+@csrf_exempt
 def topinterpretations(request):
     latte = Latte.objects.last()
     interpretations = Interpretation.objects.all().filter(latte=latte)
@@ -89,7 +94,7 @@ def menu(request):
         logout(request)
         return redirect('/login') 
     context = {
-        'quote': get_quote(),
+        'quote': get_quote() if request.user.is_authenticated else "You would see some of my miraculous wisdom if you were logged in...",
     }
     template = loader.get_template('home.html')
     return HttpResponse(template.render(context, request))
