@@ -6,13 +6,13 @@ Latte Rorschach is a web page where visitors are presented with an image of latt
 
 ## User Manual
 ### Compilation & Execution
-To setup the empty database:
+First navigate to the latterorschach folder:
 ```bash
-python3 setup.py
+cd latterorschach
 ```
-To run the program locally:
+Now run the program locally:
 ```bash
-python3 app.py
+python3 manage.py runserver
 ```
 This will run the program in the web browser displayed (looks like an IP address)
 
