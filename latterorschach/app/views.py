@@ -4,8 +4,9 @@ from django.template import loader
 from .models import Latte, Interpretation, User, Like
 from django.contrib import messages
 from django.contrib.auth import authenticate, logout, login
-
+from django.http import QueryDict
 from .quotes import get_quote
+from datetime import datetime, timedelta
 
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
@@ -113,16 +114,17 @@ def add_latte(request):
 
 @csrf_exempt
 def topinterpretations(request):
+    current_date = datetime.now().date()
     latte = Latte.objects.last()
-    interpretations = Interpretation.objects.all().filter(latte=latte)
+    date_str = request.GET.get('date')
+    date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else current_date
 
-    if request.method == 'POST':
-        interp = Interpretation.objects.get(id=request.POST.get('inid'))
+    interpretations = Interpretation.objects.filter(latte=latte, created_at__date=date)
 
-        if len(Like.objects.all().filter(interpretation=interp, user=request.user)) > 0:
-            Like.objects.get(interpretation=interp, user=request.user).delete()
-        else:
-            Like.objects.create(interpretation=interp, user=request.user).save()
+    yesterday_date = date - timedelta(days=1)  
+
+    current_date_str = date.strftime('%Y-%m-%d')
+    yesterday_date_str = yesterday_date.strftime('%Y-%m-%d')
 
     interps_list = []
     for interp in interpretations:
@@ -144,8 +146,20 @@ def topinterpretations(request):
 
     context = {
         'latte': latte,
-        'interpretations': interps_list
+        'interpretations': interps_list,
+        'date': date.strftime('%Y-%m-%d'), 
+        'current_date': current_date_str,  
+        'yesterday_date': yesterday_date_str,  
     }
+
+    if request.method == 'POST':
+        interp = Interpretation.objects.get(id=request.POST.get('inid'))
+
+        if len(Like.objects.all().filter(interpretation=interp, user=request.user)) > 0:
+            Like.objects.get(interpretation=interp, user=request.user).delete()
+        else:
+            Like.objects.create(interpretation=interp, user=request.user).save()
+
     template = loader.get_template('topInterpretations.html')
     return HttpResponse(template.render(context, request))
 

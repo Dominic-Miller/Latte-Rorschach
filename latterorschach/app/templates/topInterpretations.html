@@ -93,6 +93,17 @@
         .liked {
             filter:grayscale(0%);
         }
+        #date-picker {
+            width: 150px;
+            height: 30px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            color: #333;
+            padding: 5px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
     </style>
 </head>
 {% include 'menubutton.html' %} 
@@ -102,7 +113,13 @@
             <img src="{{ latte.img_url }}" alt="Rorschach of the day">
         </div>
         <div class="interpretations-container panel" style="float:right;" >
-            <h1 class="interpretation-title">Today's Interpretations</h1>
+            <form action="" method="GET" id="date-picker-form">
+                <label for="date-picker">Select a date:</label>
+                <input type="date" id="date-picker" name="date" value="{{ date }}" onchange="document.getElementById('date-picker-form').submit();">
+            </form>
+           
+        
+            <h1 class="Interpretations"> Interpretation History </h1>
             {% for x in interpretations %}
                 <div style="  display: flex; align-items: center; ">
                     {% if user.is_authenticated %}
