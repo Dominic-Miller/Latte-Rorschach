@@ -68,8 +68,43 @@ def account(request):
 
 @csrf_exempt
 def history(request):
-    """View function for home page of site."""
-    return render(request, 'reviewHistory.html')
+    interpretations = Interpretation.objects.all().filter(user=request.user)
+
+    t_likes = 0
+    t_interps = 0
+
+    interps_list = []
+    for interp in interpretations:
+        likes = len(Like.objects.all().filter(interpretation=interp))
+
+        t_likes += likes
+        t_interps += 1
+
+        interps_list.append({
+                            "text" : interp.text,
+                            "date" : interp.latte.date,
+                            "likes" : likes if likes else ""
+                            })
+
+    interps_list = reversed(sorted(interps_list, key=lambda d: int(d['likes']) if d['likes'] != "" else 0))
+
+    ## WIP calculate rank
+    # interps = Interpretation.objects.order_by('latte').values_list('latte', flat=True).distinct()
+
+    # for interp in interps:
+    #     print(interp)
+    rank = 1
+
+    context = {
+        't_likes' : t_likes,
+        't_interps' : t_interps,
+        'liked_interps' : len(Like.objects.all().filter(user=request.user)),
+        'rank' : rank,
+        'username' : request.user.username,
+        'interpretations': interps_list
+    }
+    template = loader.get_template('history.html')
+    return HttpResponse(template.render(context, request))
 
 @csrf_exempt
 def add_latte(request):

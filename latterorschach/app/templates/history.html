@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Top Interpretation of the Day</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: #444;
+            background: url('static/bean-background.jpg') no-repeat center center fixed; 
+            background-size: cover;
+        }
+        h2 {
+            color: #5D4037;
+            margin-bottom: 20px;
+        }
+        .center-content {
+            position: center;
+            margin: 5%;
+        }
+        .panel {
+            width: 300px;
+            padding: 20px;
+            background: #fffefe;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+        }
+        .latte-container {
+            width: 35%;
+            padding: 20px;
+            text-align: center;
+            position: fixed;
+        }
+        img {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+        .interpretations-container {
+            margin: 0 auto;
+            width: 50%;
+            padding: 20px;
+            border: 1px solid white;
+            border-radius: 5px;
+        }
+        .interpretation-container { 
+            padding-right: 3%;
+            padding-left: 3%;
+            margin: 2%;
+            width: 75%;
+            border: 1px solid gray;
+            border-radius: 5px;
+        }
+        .interpretation-title {
+            font-size: 24px;
+            color: #333;
+        }   
+        .interpretation {
+            font-size: 18px;
+            font-style: italic;
+            color: black;
+        }   
+        .username {
+            font-size: 18px;
+            color: #666;
+        }
+        .like-button {
+            font-size: 32px;
+            background: transparent;
+            border: none !important;
+            position: relative;
+            float: right;
+        }
+    </style>
+</head>
+{% include 'menubutton.html' %} 
+<body>
+    <div class="center-content">
+        <div class="latte-container panel" style="float:left;" >
+            <h1 class="interpretation-title">{{ username }}'s Stats</h1>
+            <p style="text-align:left;">Total Likes:</p>
+            <p style="text-align:right;color:black;">{{ t_likes }}</p>
+            <p style="text-align:left;">Interpretations Liked:</p>
+            <p style="text-align:right;color:black;">{{ liked_interps }}</p>
+            <p style="text-align:left;">Total Interpretations:</p>
+            <p style="text-align:right;color:black;">{{ t_interps }}</p>
+            <!--<h3>You are the number {{ rank }} latte interpreter!</h3>-->
+        </div>
+        <div class="interpretations-container panel" style="float:right;" >
+            <h1 class="interpretation-title">{{ username }}'s Interpretations</h1>
+            {% for x in interpretations %}
+                <div style="  display: flex; align-items: center; ">
+                    <div class="interpretation-container">
+                        <p class="interpretation" style="text-align:left;">"{{ x.text }}"</p>
+                        <p class="username" style="text-align:right;"> on {{ x.date }}</p>
+                    </div>
+                    <button class="like-button" title="{{ x.likes }} user found this insightful!">🤔 {{ x.likes }}</button>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
