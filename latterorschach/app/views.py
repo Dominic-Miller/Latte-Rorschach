@@ -187,7 +187,7 @@ def menu(request):
     
     context = {
         'quote': get_quote() if request.user.is_authenticated else "You would see some of my miraculous wisdom if you were logged in...",
-        'username': username if request.user.is_authenticated else 'Guest',
+        'username': request.user.username if request.user.is_authenticated else 'Guest',
     }
 
     # Render the home page with context variables
