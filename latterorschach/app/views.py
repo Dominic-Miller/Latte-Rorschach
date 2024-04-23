@@ -77,6 +77,10 @@ def topinterpretations(request):
     template = loader.get_template('topInterpretations.html')
     return HttpResponse(template.render(context, request))
 
+@csrf_exempt
 def menu(request):
     """View function for home page of site."""
+    if request.method == 'POST':
+        logout(request)
+        return redirect('/login') 
     return render(request, 'home.html')

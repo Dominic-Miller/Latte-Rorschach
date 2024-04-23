@@ -33,22 +33,37 @@
     margin-bottom: 20px;
   }
   
-  /* Styles to boxes to go add a review or check the review history */
   a {
+    text-decoration: none;
+  }
+
+  /* Styles to boxes to go add a review or check the review history */
+  .green-a {
     display: inline-block; /* Allows for margin auto to work */
     width: calc(100% - 40px);
     background-color: #4CAF50;
     color: white;
     padding: 14px 20px;
     margin: 8px auto;
-    text-decoration: none;
     border-radius: 4px;
     cursor: pointer;
   }
-  
-  /* Make it so the buttons change colors when hovered over it */
-  a:hover {
+  .green-a:hover {
     background-color: #45a049;
+  }
+  .gray-a {
+    display: inline-block; /* Allows for margin auto to work */
+    width: calc(100% - 40px);
+    background-color: null;
+    color: black;
+    padding: 5%;
+    border: solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  .gray-a:hover {
+    background-color: #ccc;
   }
   
   .container {
@@ -58,6 +73,19 @@
   .container p {
     text-align: center;
   }
+  input[type=submit] {
+      width: 100%;
+      background-color: #ea534d;
+      color: white;
+      padding: 14px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 20px;
+  }
+  input[type=submit]:hover {
+    background-color: #b6403c;
+  }
 </style>
 </head>
 <body>
@@ -65,11 +93,12 @@
   <div class="home-box">
     <h2>Welcome, {{ username }}!</h2>
     <div class="container">
-      <a href="/add-daily-review">Add Daily Review</a>
-      <a href="/review-history">Review History</a>
-      <a href="/interpretation">Top Interpretation of the Day</a>
-      <a href="/account_settings">Account Settings</a>
-
+      <a class="green-a" href="/">Interpret Today's Cuppa! 🤔</a>
+      <a class="gray-a" href="/topinterpretations">See What Others Have Said 💭</a>
+      <a class="gray-a" href="/account_settings">Account Settings 🤓</a>
+      <form action="" method="post">
+        <input type="submit" value="Log Out 😭">
+    </form>
     </div>
   </div>
 
