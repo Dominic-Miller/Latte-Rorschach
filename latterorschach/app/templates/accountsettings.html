@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-<title>Home</title>
+<title>Account Settings</title>
 <style>
   /* Adds the coffee bean image to the background */
   body, html {
@@ -105,42 +105,24 @@
 </style>
 </head>
 <body>
+    {% include 'menubutton.html' %} 
   <div style="display: grid;
       row-gap: 50px;
       position: absolute;
-      top: 10%;
+      top: 50%;
       left: 50%;
-      transform: translate(-50%, 0%);">
+      transform: translate(-50%, -50%);">
   <div class="home-box" style="grid-row: 1;">
-    <h2>Welcome, {{ username }}!</h2>
+    <h2>Account Settings</h2>
     <div class="container">
-      <a class="green-a" href="/">Interpret Today's Cuppa! 🤔</a>
-      <a class="gray-a" href="/topinterpretations">See What Others Have Said 💭</a>
-      {% if user.is_authenticated %}
-      <a class="gray-a" href="/addlatte">Add Latte For Interpretations ☕</a>
-      {% endif %}
-      <a class="gray-a" href="/accountsettings">Account Settings ⚙</a>
-      {% if user.is_staff %}
-      <a class="gray-a" href="/admin">Admin Settings 🤓</a>
-      {% endif %}
-      {% if user.is_authenticated %}
+      <a class="gray-a" href="/changeusername">Change Username 😊</a>
+      <a class="gray-a" href="/changepassword">Change Password 🔒</a>
+      <a class="gray-a" href="/changecolor">Change Color 🌈</a>
       <form action="" method="post">
-        <input type="submit" value="Log Out 😭">
-      </form>
-      {% else %}
-      <a class="green-a" href="/login">Log In 🔑</a>
-      {% endif %}
+        <input type="submit" value="Return Home 🏠">
+    </form>
     </div>
   </div>
-
-  <div class="home-box" style="grid-row: 2;">
-    <div class="container"></div>
-      <p class="interpretation" style="text-align:left;">"{{ quote }}"</p>
-      <div style="float: right;">
-        <p class="username"> - Probably Hermann Rorschach</p>
-        <img style="width:55px;" src="https://upload.wikimedia.org/wikipedia/commons/5/5b/Hermann_Rorschach_c.1910.JPG"/>
-      </div>
-    </div>
 </div>
 
 </body>

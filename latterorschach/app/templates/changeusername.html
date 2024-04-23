@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<head>
+<title>Change Username</title>
+<style>
+  /* Adds the coffee bean image to the background */
+  body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #444;
+    background: url('/static/bean-background.jpg') no-repeat center center fixed; 
+    background-size: cover;
+  }
+  /* Centers the register box, adds a shadow, and rounds the corners */
+  .register-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background: #fffefe;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    width: 300px;
+  }
+  
+  /* Styles the welcome message */
+  h2 {
+    color: #5D4037;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  /* Styles the username and password input fields */
+  input[type=text], input[type=password] {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    border-radius: 4px;
+  }
+  
+  /* Styles the submit button */
+  input[type=submit] {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  /* Make it so the submit button changes colors when hovered over it */
+  input[type=submit]:hover {
+    background-color: #45a049;
+  }
+</style>
+</head>
+{% include 'menubutton.html' %} 
+<body>
+  <!-- Code for the register box which gets the username and password and creates account when submit is clicked -->
+  <div class="register-box">
+    <h2>Change Username</h2>
+    <form action="" method="post">
+      Current Username: <input type="text" name="original_username" required><br>
+      Password: <input type="password" name="original_password" required><br>
+      New Username: <input type="text" name="new_username" required><br>
+      <input type="submit" value="Change Username">
+    </form>
+  </div>
+
+</body>
+</html>

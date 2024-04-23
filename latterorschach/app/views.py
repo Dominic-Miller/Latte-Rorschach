@@ -61,18 +61,22 @@ def user_login(request):
             messages.error(request, 'Invalid username or password.')
     return render(request, 'login.html')
 
+@csrf_exempt
 def account(request):
     """View function for home page of site."""
     return render(request, 'account.html')
 
+@csrf_exempt
 def history(request):
     """View function for home page of site."""
     return render(request, 'reviewHistory.html')
 
+@csrf_exempt
 def add_latte(request):
     """Add new latte object to database"""
     return render(request, 'addlatte.html')
-    
+
+@csrf_exempt
 def topinterpretations(request):
     latte = Latte.objects.last()
     interpretations = Interpretation.objects.all().filter(latte=latte)
@@ -94,3 +98,65 @@ def menu(request):
     }
     template = loader.get_template('home.html')
     return HttpResponse(template.render(context, request))
+
+@csrf_exempt
+@login_required
+def accountsettings(request):
+    if request.method == 'POST':
+        return redirect('/menu') 
+    return render(request, 'accountsettings.html')
+
+@csrf_exempt
+@login_required
+def changeusername(request):
+    if request.method == 'POST':
+        current_user = request.user
+        original_username = request.POST.get('original_username')
+        original_password = request.POST.get('original_password')
+        new_username = request.POST.get('new_username')
+
+        user = authenticate(username=original_username, password=original_password)
+        if user is None or user != current_user:
+            return HttpResponse("Invalid username or password for the current user.", status=400)
+        user.username = new_username
+
+        try:
+            user.save()
+        except Exception as exception:
+            return HttpResponse(f"Error updating username: {str(exception)}", status=400)
+        
+        return redirect('/accountsettings') 
+    return render(request, 'changeusername.html')
+
+@csrf_exempt
+@login_required
+def changepassword(request):
+    if request.method == 'POST':
+        current_user = request.user
+        original_username = request.POST.get('original_username')
+        original_password = request.POST.get('original_password')
+        new_password = request.POST.get('new_password')
+
+        user = authenticate(username=original_username, password=original_password)
+        if user is None or user != current_user:
+            return HttpResponse("Invalid username or password for the current user.", status=400)
+        
+        if not new_password:
+            return HttpResponse("New password cannot be empty.", status=400)
+        
+        if new_password == original_password:
+            return HttpResponse("New Password shouldn't equal old password.", status=400)
+
+        user.set_password(new_password)
+        try:
+            user.save()
+            login(request, user)
+        except Exception as exception:
+            return HttpResponse(f"Error updating password: {str(exception)}", status=400)
+        return redirect('/accountsettings') 
+    return render(request, 'changepassword.html')
+
+@csrf_exempt
+@login_required
+def changecolor(request):
+    return render(request, 'changecolor.html')
