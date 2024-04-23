@@ -46,15 +46,19 @@
             border: 1px solid white;
             border-radius: 5px;
         }
-        .interpretation-container { 
+        .interpretation-container-authenticated { 
             padding-right: 3%;
             padding-left: 3%;
             margin: 2%;
-            {% if user.is_authenticated %}
             width: 75%;
-            {% else %}
+            border: 1px solid gray;
+            border-radius: 5px;
+        }
+        .interpretation-container-nonauthenticated { 
+            padding-right: 3%;
+            padding-left: 3%;
+            margin: 2%;
             width: 100%;
-            {% endif %}
             border: 1px solid gray;
             border-radius: 5px;
         }
@@ -77,7 +81,7 @@
             border: none !important;
             position: relative;
             float: right;
-            /* transform: translate(-100%, 100%); */
+          
             filter:grayscale(100%);
             transition: all 0.5s ease;
         }
@@ -101,7 +105,11 @@
             <h1 class="interpretation-title">Today's Interpretations</h1>
             {% for x in interpretations %}
                 <div style="  display: flex; align-items: center; ">
-                    <div class="interpretation-container">
+                    {% if user.is_authenticated %}
+                    <div class="interpretation-container-authenticated">
+                    {% else %}
+                    <div class="interpretation-container-nonauthenticated">
+                    {% endif %}
                         <p class="interpretation" style="text-align:left;">"{{ x.text }}"</p>
                         <p class="username" style="text-align:right;"> - {{ x.user }}</p>
                     </div>
