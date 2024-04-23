@@ -124,8 +124,7 @@
       <form action="" method="post">
         <input type="submit" value="Log Out 😭">
       </form>
-      {% endif %}
-      {% if not user.is_authenticated %}
+      {% else %}
       <a class="green-a" href="/login">Log In 🔑</a>
       {% endif %}
     </div>
