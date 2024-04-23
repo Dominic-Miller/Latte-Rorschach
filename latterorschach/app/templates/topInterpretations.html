@@ -96,7 +96,9 @@
                         <p class="interpretation" style="text-align:left;">"{{ x.text }}"</p>
                         <p class="username" style="text-align:right;"> - {{ x.user }}</p>
                     </div>
+                    {% if user.is_authenticated %}
                     <button class="like-button">🤔</button>
+                    {% endif %}
                 </div>
             {% endfor %}
         </div>
