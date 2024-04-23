@@ -68,6 +68,10 @@ def account(request):
 def history(request):
     """View function for home page of site."""
     return render(request, 'reviewHistory.html')
+
+def add_latte(request):
+    """Add new latte object to database"""
+    return render(request, 'addlatte.html')
     
 def topinterpretations(request):
     latte = Latte.objects.last()

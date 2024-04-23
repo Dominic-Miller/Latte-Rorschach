@@ -116,6 +116,9 @@
     <div class="container">
       <a class="green-a" href="/">Interpret Today's Cuppa! 🤔</a>
       <a class="gray-a" href="/topinterpretations">See What Others Have Said 💭</a>
+      {% if user.is_authenticated %}
+      <a class="gray-a" href="/addlatte">Add Latte For Interpretations ☕</a>
+      {% endif %}
       <a class="gray-a" href="/account_settings">Account Settings ⚙</a>
       {% if user.is_staff %}
       <a class="gray-a" href="/admin">Admin Settings 🤓</a>
