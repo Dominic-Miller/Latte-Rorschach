@@ -42,14 +42,13 @@ def register(request):
         username = request.POST.get('username', '')
         password = request.POST.get('password', '')
 
-        if username and password:
+        if username and password and not User.objects.filter(username=username).exists():
             user = User.objects.create_user(username=username)  # Create new user
             user.set_password(password)  # Set user password
             user.save()  # Save the new user
             return redirect('login')  # Redirect to login page after registration
         else:
-            messages.error(request, "Username and password are required.")  # Show error message
-    
+            return HttpResponse("Username exists.", status=400)  # Return error message
     # Render the registration page
     return render(request, 'register.html')
 
