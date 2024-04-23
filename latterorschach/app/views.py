@@ -70,8 +70,6 @@ def history(request):
 def topinterpretations(request):
     latte = Latte.objects.last()
     interpretations = Interpretation.objects.all().filter(latte=latte)
-    for interp in interpretations:
-        logger.info(interp.text)
     context = {
         'latte': latte,
         'interpretations': [ { "text" : interp.text, "user" : interp.user.username} for interp in interpretations]
