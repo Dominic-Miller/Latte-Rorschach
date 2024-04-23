@@ -15,10 +15,6 @@
   
   /* Centers the home box, adds a shadow, and rounds the corners */
   .home-box {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     padding: 20px;
     background: #fffefe;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -86,11 +82,36 @@
   input[type=submit]:hover {
     background-color: #b6403c;
   }
+  .interpretation-container { 
+            padding-right: 3%;
+            padding-left: 3%;
+            margin: 2%;
+            width: 75%;
+  }
+  .interpretation {
+            font-size: 18px;
+            font-style: italic;
+            color: black;
+  }   
+  .username {
+      font-size: 18px;
+      color: #666;
+  }
+  .like-button {
+      position: relative;
+      float: right;
+      top: 0%;
+  }
 </style>
 </head>
 <body>
-  <!-- Code to redirect to the other html pages if clicked -->
-  <div class="home-box">
+  <div style="display: grid;
+      row-gap: 50px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);">
+  <div class="home-box" style="grid-row: 1;">
     <h2>Welcome, {{ username }}!</h2>
     <div class="container">
       <a class="green-a" href="/">Interpret Today's Cuppa! 🤔</a>
@@ -101,6 +122,16 @@
     </form>
     </div>
   </div>
+
+  <div class="home-box" style="grid-row: 2;">
+    <div class="container"></div>
+      <p class="interpretation" style="text-align:left;">"{{ quote }}"</p>
+      <div style="float: right;">
+        <p class="username"> - Probably Hermann Rorschach</p>
+        <img style="width:55px;" src="https://upload.wikimedia.org/wikipedia/commons/5/5b/Hermann_Rorschach_c.1910.JPG"/>
+      </div>
+    </div>
+</div>
 
 </body>
 </html>
