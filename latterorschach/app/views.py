@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import loader
-from .models import Latte, Interpretation, User
+from .models import Latte, Interpretation, User, Like
 from django.contrib import messages
 from django.contrib.auth import authenticate, logout, login
 
@@ -55,7 +55,7 @@ def user_login(request):
         if user is not None:
             login(request, user)
             logger.info(f"{user.username} logged in")
-            return redirect('/')  # Adjust the redirect as necessary
+            return redirect('/')
         else:
             # Return an 'invalid login' error message.
             messages.error(request, 'Invalid username or password.')
@@ -68,13 +68,39 @@ def account(request):
 def history(request):
     """View function for home page of site."""
     return render(request, 'reviewHistory.html')
-    
+
+@csrf_exempt
 def topinterpretations(request):
     latte = Latte.objects.last()
     interpretations = Interpretation.objects.all().filter(latte=latte)
+
+    if request.method == 'POST':
+        interp = Interpretation.objects.get(id=request.POST.get('inid'))
+
+        if len(Like.objects.all().filter(interpretation=interp, user=request.user)) > 0:
+            Like.objects.get(interpretation=interp, user=request.user).delete()
+        else:
+            Like.objects.create(interpretation=interp, user=request.user).save()
+
+    interps_list = []
+    for interp in interpretations:
+        likes = len(Like.objects.all().filter(interpretation=interp))
+
+        is_liked_by_user = False 
+        if request.user.is_authenticated:
+            is_liked_by_user = bool(len(Like.objects.all().filter(interpretation=interp, user=request.user)))
+
+        interps_list.append({
+                            "text" : interp.text,
+                            "user" : interp.user,
+                            "likes" : likes if likes else "",
+                            "inid" : interp.id,
+                            "liked" : "liked" if is_liked_by_user else ""
+                            })
+
     context = {
         'latte': latte,
-        'interpretations': [ { "text" : interp.text, "user" : interp.user.username} for interp in interpretations]
+        'interpretations': interps_list
     }
     template = loader.get_template('topInterpretations.html')
     return HttpResponse(template.render(context, request))

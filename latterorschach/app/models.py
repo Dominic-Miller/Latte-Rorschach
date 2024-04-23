@@ -39,8 +39,7 @@ class Interpretation(models.Model):
     parent = models.ForeignKey('self',
                                on_delete=models.CASCADE,
                                null=True,
-                               blank=True,
-                               related_name='replies')
+                               blank=True)
 
     latte = models.ForeignKey(Latte,
                                on_delete=models.CASCADE,
@@ -52,16 +51,16 @@ class Interpretation(models.Model):
                             on_delete=models.SET_NULL
                             )
 
-# class Like(models.Model):
+class Like(models.Model):
 
-#     interpretation = models.ForeignKey(Interpretation,
-#                                on_delete=models.CASCADE,
-#                                null=True,
-#                                blank=True,
-#                                related_name='replies')
+    interpretation = models.ForeignKey(Interpretation,
+                               on_delete=models.CASCADE,
+                               null=True,
+                               blank=True,
+                               related_name='replies')
 
-#     user = models.ForeignKey(User,
-#                         default=1,
-#                         null=True,
-#                         on_delete=models.SET_NULL
-#                         )
+    user = models.ForeignKey(User,
+                        default=1,
+                        null=True,
+                        on_delete=models.SET_NULL
+                        )
