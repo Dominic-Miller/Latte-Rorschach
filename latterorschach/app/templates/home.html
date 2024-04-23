@@ -117,7 +117,9 @@
       <a class="green-a" href="/">Interpret Today's Cuppa! 🤔</a>
       <a class="gray-a" href="/topinterpretations">See What Others Have Said 💭</a>
       <a class="gray-a" href="/account_settings">Account Settings ⚙</a>
+      {% if user.is_staff %}
       <a class="gray-a" href="/admin">Admin Settings 🤓</a>
+      {% endif %}
       <form action="" method="post">
         <input type="submit" value="Log Out 😭">
     </form>
