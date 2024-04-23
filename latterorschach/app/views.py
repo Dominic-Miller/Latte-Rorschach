@@ -18,94 +18,103 @@ logger = logging.getLogger("django.views")
 @csrf_exempt
 @login_required
 def today(request):
-    latte = Latte.objects.last()
+    latte = Latte.objects.last()  # Get the last Latte object
     if request.method == 'POST':
-        response = request.POST.get('response')
-        if request.POST.get('response') != "":
-            logger.info(f"{request.user.username} said "
-                        f"\"{response}\" about latte {latte.date}")
-            
-            interpretation = Interpretation.objects.create(user=request.user,
-                                                text=response,
-                                                latte=latte)
-            interpretation.save()
-            return redirect('topinterpretations')
-    template = loader.get_template('dailyReview.html')
-    context = {
-        'latte': latte,
-    }
-    return HttpResponse(template.render(context, request))
+        response = request.POST.get('response', '')
+        if response:  # Only proceed if the response is not empty
+            logger.info(f"{request.user.username} said \"{response}\" about latte {latte.date}")
+
+            interpretation = Interpretation.objects.create(
+                user=request.user,
+                text=response,
+                latte=latte
+            )
+            interpretation.save()  # Save the new interpretation
+            return redirect('topinterpretations')  # Redirect to top interpretations after POST
+
+    # Render the daily review template
+    return render(request, 'dailyReview.html', {'latte': latte})
+
 
 @csrf_exempt
 def register(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = User.objects.create_user(username=username)
-        user.set_password(password)
-        user.save()
-        return redirect('login')
+        username = request.POST.get('username', '')
+        password = request.POST.get('password', '')
+
+        if username and password:
+            user = User.objects.create_user(username=username)  # Create new user
+            user.set_password(password)  # Set user password
+            user.save()  # Save the new user
+            return redirect('login')  # Redirect to login page after registration
+        else:
+            messages.error(request, "Username and password are required.")  # Show error message
+    
+    # Render the registration page
     return render(request, 'register.html')
+
 
 @csrf_exempt
 def user_login(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(username=username, password=password)
+        username = request.POST.get('username', '')
+        password = request.POST.get('password', '')
+
+        user = authenticate(username=username, password=password)  # Authenticate user
         if user is not None:
-            login(request, user)
+            login(request, user)  # Log in the user
             logger.info(f"{user.username} logged in")
-            return redirect('/')
+            return redirect('/')  # Redirect to home page
         else:
             # Return an 'invalid login' error message.
-            messages.error(request, 'Invalid username or password.')
+            messages.error(request, 'Invalid username or password.')  # Show error message
+    
+    # Render the login page
     return render(request, 'login.html')
 
-@csrf_exempt
+@login_required  # Ensure that the user is logged in
 def account(request):
-    """View function for home page of site."""
-    return render(request, 'account.html')
+    """Render the account page."""
+    context = {
+        'username': request.user.username,  # Pass the username to the template
+    }
+    return render(request, 'account.html', context)
 
 @csrf_exempt
+@login_required
 def history(request):
-    interpretations = Interpretation.objects.all().filter(user=request.user)
+    interpretations = Interpretation.objects.filter(user=request.user)  # Get user-specific interpretations
 
-    t_likes = 0
-    t_interps = 0
+    t_likes = 0  # Initialize total likes
+    t_interps = len(interpretations)  # Total interpretations
 
     interps_list = []
     for interp in interpretations:
-        likes = len(Like.objects.all().filter(interpretation=interp))
+        likes = Like.objects.filter(interpretation=interp).count()  # Get like count
 
-        t_likes += likes
-        t_interps += 1
-
+        t_likes += likes  # Increment total likes
         interps_list.append({
-                            "text" : interp.text,
-                            "date" : interp.latte.date,
-                            "likes" : likes if likes else ""
-                            })
+            "text": interp.text,
+            "date": interp.latte.date,
+            "likes": likes if likes > 0 else "",  # Display empty if no likes
+        })
 
+    # Reverse and sort by likes, considering empty as zero
     interps_list = reversed(sorted(interps_list, key=lambda d: int(d['likes']) if d['likes'] != "" else 0))
 
-    ## WIP calculate rank
-    # interps = Interpretation.objects.order_by('latte').values_list('latte', flat=True).distinct()
-
-    # for interp in interps:
-    #     print(interp)
-    rank = 1
+    rank = 1  # Rank placeholder, consider further logic for ranking if required
 
     context = {
-        't_likes' : t_likes,
-        't_interps' : t_interps,
-        'liked_interps' : len(Like.objects.all().filter(user=request.user)),
-        'rank' : rank,
-        'username' : request.user.username,
-        'interpretations': interps_list
+        't_likes': t_likes,
+        't_interps': t_interps,
+        'liked_interps': Like.objects.filter(user=request.user).count(),
+        'rank': rank,
+        'username': request.user.username,
+        'interpretations': interps_list,
     }
-    template = loader.get_template('history.html')
-    return HttpResponse(template.render(context, request))
+
+    # Render the history page with context
+    return render(request, 'history.html', context)
 
 @csrf_exempt
 def add_latte(request):
@@ -113,139 +122,155 @@ def add_latte(request):
     return render(request, 'addlatte.html')
 
 @csrf_exempt
+@login_required
 def topinterpretations(request):
-    current_date = datetime.now().date()
-    latte = Latte.objects.last()
-    date_str = request.GET.get('date')
+    current_date = datetime.now().date()  # Current date
+    latte = Latte.objects.last()  # Get last Latte object
+    date_str = request.GET.get('date', '')  # Get optional date parameter
     date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else current_date
 
-    interpretations = Interpretation.objects.filter(latte=latte, created_at__date=date)
+    interpretations = Interpretation.objects.filter(latte=latte, created_at__date=date)  # Filter by date
 
-    yesterday_date = date - timedelta(days=1)  
-
+    yesterday_date = date - timedelta(days=1)  # Get yesterday's date
     current_date_str = date.strftime('%Y-%m-%d')
     yesterday_date_str = yesterday_date.strftime('%Y-%m-%d')
 
     interps_list = []
     for interp in interpretations:
-        likes = len(Like.objects.all().filter(interpretation=interp))
+        likes = Like.objects.filter(interpretation=interp).count()  # Like count
 
-        is_liked_by_user = False 
-        if request.user.is_authenticated:
-            is_liked_by_user = bool(len(Like.objects.all().filter(interpretation=interp, user=request.user)))
+        is_liked_by_user = request.user.is_authenticated and Like.objects.filter(
+            interpretation=interp, user=request.user).exists()  # Check if liked by current user
 
         interps_list.append({
-                            "text" : interp.text,
-                            "user" : interp.user,
-                            "likes" : likes if likes else "",
-                            "inid" : interp.id,
-                            "liked" : "liked" if is_liked_by_user else ""
-                            })
+            "text": interp.text,
+            "user": interp.user,
+            "likes": likes if likes > 0 else "",
+            "inid": interp.id,
+            "liked": "liked" if is_liked_by_user else "",
+        })
 
+    # Sort and reverse by likes
     interps_list = reversed(sorted(interps_list, key=lambda d: int(d['likes']) if d['likes'] != "" else 0))
 
     context = {
         'latte': latte,
         'interpretations': interps_list,
-        'date': date.strftime('%Y-%m-%d'), 
-        'current_date': current_date_str,  
-        'yesterday_date': yesterday_date_str,  
+        'date': current_date_str,  # Pass formatted dates
+        'yesterday_date': yesterday_date_str,
     }
 
-    if request.method == 'POST':
-        interp = Interpretation.objects.get(id=request.POST.get('inid'))
+    if request.method == 'POST':  # Handle like/unlike logic
+        inid = request.POST.get('inid', '')  # Get interpretation ID
+        if inid:  # Ensure valid ID
+            interp = Interpretation.objects.get(id=inid)  # Get the interpretation
+            user_like = Like.objects.filter(interpretation=interp, user=request.user)  # Check for existing like
 
-        if len(Like.objects.all().filter(interpretation=interp, user=request.user)) > 0:
-            Like.objects.get(interpretation=interp, user=request.user).delete()
-        else:
-            Like.objects.create(interpretation=interp, user=request.user).save()
+            if user_like.exists():  # If liked, remove like
+                user_like.delete()
+            else:  # If not liked, add like
+                Like.objects.create(interpretation=interp, user=request.user).save()
 
-    template = loader.get_template('topInterpretations.html')
-    return HttpResponse(template.render(context, request))
+    # Render the top interpretations page
+    return render(request, 'topInterpretations.html', context)
+
 
 @csrf_exempt
 def menu(request):
     """View function for home page of site."""
     if not request.user.is_authenticated:
-        username = 'Guest'
-    else:
-        username = request.user.username
+        username = 'Guest'  # Default username for unauthenticated users
 
-    if request.method == 'POST':
-        logout(request)
-        return redirect('/login') 
+    if request.method == 'POST':  # Handle logout request
+        logout(request)  # Log out the current user
+        return redirect('/login')  # Redirect to login
+    
     context = {
         'quote': get_quote() if request.user.is_authenticated else "You would see some of my miraculous wisdom if you were logged in...",
-        'username' : username
+        'username': username if request.user.is_authenticated else 'Guest',
     }
-    template = loader.get_template('home.html')
-    return HttpResponse(template.render(context, request))
+
+    # Render the home page with context variables
+    return render(request, 'home.html', context)
+
 
 @csrf_exempt
 @login_required
 def accountsettings(request):
-    if not request.user.is_authenticated:
-        username = 'Guest'
-    else:
-        username = request.user.username
+    if request.method == 'POST':  # Handle POST request
+        return redirect('/menu')  # Redirect to menu page
 
-    if request.method == 'POST':
-        return redirect('/menu') 
-    template = loader.get_template('accountsettings.html')
-    context = {'username' : username}
-    return HttpResponse(template.render(context, request))
+    # Pass the current username to the template
+    context = {'username': request.user.username}
+    
+    # Render the account settings page
+    return render(request, 'accountsettings.html', context)
+
 
 @csrf_exempt
 @login_required
 def changeusername(request):
-    if request.method == 'POST':
+    if request.method == 'POST':  # Handle POST request to change username
         current_user = request.user
-        original_username = request.POST.get('original_username')
-        original_password = request.POST.get('original_password')
-        new_username = request.POST.get('new_username')
+        original_username = request.POST.get('original_username', '')
+        original_password = request.POST.get('original_password', '')
+        new_username = request.POST.get('new_username', '')
 
-        user = authenticate(username=original_username, password=original_password)
-        if user is None or user != current_user:
-            return HttpResponse("Invalid username or password for the current user.", status=400)
-        user.username = new_username
+        user = authenticate(username=original_username, password=original_password)  # Authenticate to ensure validity
+        
+        if user is None or user != current_user:  # Check if valid user
+            return HttpResponse("Invalid username or password for the current user.", status=400)  # Return error message
+        
+        user.username = new_username  # Update the username
 
         try:
-            user.save()
+            user.save()  # Save the updated username
         except Exception as exception:
-            return HttpResponse(f"Error updating username: {str(exception)}", status=400)
+            return HttpResponse(f"Error updating username: {str(exception)}", status=400)  # Handle exceptions
         
-        return redirect('/accountsettings') 
+        return redirect('/accountsettings')  # Redirect to account settings
+    
+    # Render the change username page
     return render(request, 'changeusername.html')
+
 
 @csrf_exempt
 @login_required
 def changepassword(request):
-    if request.method == 'POST':
+    if request.method == 'POST':  # Handle POST request for changing password
         current_user = request.user
-        original_username = request.POST.get('original_username')
-        original_password = request.POST.get('original_password')
-        new_password = request.POST.get('new_password')
+        original_username = request.POST.get('original_username', '')
+        original_password = request.POST.get('original_password', '')
+        new_password = request.POST.get('new_password', '')
 
-        user = authenticate(username=original_username, password=original_password)
-        if user is None or user != current_user:
-            return HttpResponse("Invalid username or password for the current user.", status=400)
+        user = authenticate(username=original_username, password=original_password)  # Authenticate user
         
-        if not new_password:
-            return HttpResponse("New password cannot be empty.", status=400)
+        if user is None or user != current_user:  # Validate current user
+            return HttpResponse("Invalid username or password for the current user.", status=400)  # Return error message
         
-        if new_password == original_password:
-            return HttpResponse("New Password shouldn't equal old password.", status=400)
-
-        user.set_password(new_password)
+        if not new_password:  # Check for empty new password
+            return HttpResponse("New password cannot be empty.", status=400)  # Return error
+        
+        if new_password == original_password:  # Ensure passwords are different
+            return HttpResponse("New password shouldn't equal old password.", status=400)
+        
+        user.set_password(new_password)  # Set the new password
+        
         try:
-            user.save()
-            login(request, user)
+            user.save()  # Save the updated password
+            login(request, user)  # Log the user back in after password change
         except Exception as exception:
-            return HttpResponse(f"Error updating password: {str(exception)}", status=400)
-        return redirect('/accountsettings') 
+            return HttpResponse(f"Error updating password: {str(exception)}", status=400)  # Handle error
+        
+        return redirect('/accountsettings')  # Redirect to account settings
+    
+    # Render the change password page
     return render(request, 'changepassword.html')
+
 
 @csrf_exempt
 @login_required
 def changecolor(request):
+    """Renders change color page"""
+    # Render the change color template
     return render(request, 'changecolor.html')
