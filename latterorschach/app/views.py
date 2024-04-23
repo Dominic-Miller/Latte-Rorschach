@@ -90,11 +90,17 @@ def topinterpretations(request):
 @csrf_exempt
 def menu(request):
     """View function for home page of site."""
+    if not request.user.is_authenticated:
+        username = 'Guest'
+    else:
+        username = request.user.username
+
     if request.method == 'POST':
         logout(request)
         return redirect('/login') 
     context = {
         'quote': get_quote() if request.user.is_authenticated else "You would see some of my miraculous wisdom if you were logged in...",
+        'username' : username
     }
     template = loader.get_template('home.html')
     return HttpResponse(template.render(context, request))
@@ -102,9 +108,16 @@ def menu(request):
 @csrf_exempt
 @login_required
 def accountsettings(request):
+    if not request.user.is_authenticated:
+        username = 'Guest'
+    else:
+        username = request.user.username
+
     if request.method == 'POST':
         return redirect('/menu') 
-    return render(request, 'accountsettings.html')
+    template = loader.get_template('accountsettings.html')
+    context = {'username' : username}
+    return HttpResponse(template.render(context, request))
 
 @csrf_exempt
 @login_required
