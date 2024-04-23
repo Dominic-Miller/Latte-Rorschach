@@ -105,6 +105,8 @@ def topinterpretations(request):
                             "liked" : "liked" if is_liked_by_user else ""
                             })
 
+    interps_list = reversed(sorted(interps_list, key=lambda d: int(d['likes']) if d['likes'] != "" else 0))
+
     context = {
         'latte': latte,
         'interpretations': interps_list
