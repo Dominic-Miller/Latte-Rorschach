@@ -49,7 +49,11 @@
             padding-right: 3%;
             padding-left: 3%;
             margin: 2%;
+            {% if user.is_authenticated %}
             width: 75%;
+            {% else %}
+            width: 100%;
+            {% endif %}
             border: 1px solid gray;
             border-radius: 5px;
         }
@@ -78,7 +82,11 @@
         }
         .like-button:hover {
             filter:grayscale(50%);
-            scale: 120%;
+            scale: 140%;
+            transform: rotate(-10deg) translate(-1px, 1px);
+        }
+        .liked {
+            filter:grayscale(0%);
         }
     </style>
 </head>
@@ -97,7 +105,10 @@
                         <p class="username" style="text-align:right;"> - {{ x.user }}</p>
                     </div>
                     {% if user.is_authenticated %}
-                    <button class="like-button">🤔</button>
+                    <form action="/topinterpretations" method="POST" id="{{ x.inid }}">
+                        <button class="like-button {{ x.liked }}" title="I find this insightful!" form="{{ x.inid }}" value="Submit">🤔 {{ x.likes }}</button>
+                        <input type="hidden" id="inid" name="inid" value="{{ x.inid }}">
+                    </form>
                     {% endif %}
                 </div>
             {% endfor %}
