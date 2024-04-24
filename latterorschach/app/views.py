@@ -20,7 +20,8 @@ stored_date = datetime.now().date()
 @csrf_exempt
 @login_required
 def today(request):
-    latte = Latte.objects.last()  # Get the last Latte object
+    dailylatte = datetime.now().date()
+    latte = Latte.objects.get(date=dailylatte)
     if request.method == 'POST':
         response = request.POST.get('response', '')
         if response:  # Only proceed if the response is not empty
@@ -157,17 +158,17 @@ def add_latte(request):
 @csrf_exempt
 def topinterpretations(request):
     global stored_date
-    latte = Latte.objects.last()  # Get last Latte object
     date_str = request.GET.get('date', '')  # Get optional date parameter
     if not date_str:
-        date = stored_date
+        currentdate = stored_date
     else:
-        date = datetime.strptime(date_str, '%Y-%m-%d').date()
-        stored_date = date
-    interpretations = Interpretation.objects.filter(latte=latte, created_at__date=date)  # Filter by date
+        currentdate = datetime.strptime(date_str, '%Y-%m-%d').date()
+        stored_date = currentdate
+    latte = Latte.objects.get(date=currentdate)
+    interpretations = Interpretation.objects.filter(latte=latte, created_at__date=currentdate)  # Filter by date
 
-    yesterday_date = date - timedelta(days=1)  # Get yesterday's date
-    current_date_str = date.strftime('%Y-%m-%d')
+    yesterday_date = currentdate - timedelta(days=1)  # Get yesterday's date
+    current_date_str = currentdate.strftime('%Y-%m-%d')
     yesterday_date_str = yesterday_date.strftime('%Y-%m-%d')
 
     interps_list = []
