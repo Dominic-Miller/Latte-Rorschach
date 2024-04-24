@@ -20,9 +20,15 @@ stored_date = datetime.now().date()
 @csrf_exempt
 @login_required
 def today(request):
+    global stored_date
     dailylatte = datetime.now().date()
-    latte = Latte.objects.get(date=dailylatte)
-    if request.method == 'POST':
+    try:
+        latte = Latte.objects.get(date=dailylatte)
+    except:
+        stored_date = datetime.now().date()
+        latte = None
+    
+    if request.method == 'POST' and latte:
         response = request.POST.get('response', '')
         if response:  # Only proceed if the response is not empty
             logger.info(f"{request.user.username} said \"{response}\" about latte {latte.date}")
@@ -164,8 +170,13 @@ def topinterpretations(request):
     else:
         currentdate = datetime.strptime(date_str, '%Y-%m-%d').date()
         stored_date = currentdate
-    latte = Latte.objects.get(date=currentdate)
-    interpretations = Interpretation.objects.filter(latte=latte, created_at__date=currentdate)  # Filter by date
+    
+    try:
+        latte = Latte.objects.get(date=currentdate)
+    except:
+        latte = None
+    
+    interpretations = Interpretation.objects.filter(latte=latte)  # Filter by date
 
     yesterday_date = currentdate - timedelta(days=1)  # Get yesterday's date
     current_date_str = currentdate.strftime('%Y-%m-%d')

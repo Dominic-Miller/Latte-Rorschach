@@ -109,9 +109,11 @@
 {% include 'menubutton.html' %} 
 <body>
     <div class="center-content">
+        {% if latte %}
         <div class="latte-container panel" style="float:left;" >
             <img src="{{ latte.img_url }}" alt="Rorschach of the day">
         </div>
+        {% endif %}
         <div class="interpretations-container panel" style="float:right;" >
             <form action="" method="GET" id="date-picker-form">
                 <label for="date-picker">Select a date:</label>
