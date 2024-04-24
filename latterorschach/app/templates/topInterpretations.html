@@ -124,7 +124,29 @@
             <form action="" method="GET" id="date-picker-form">
                 <label for="date-picker">Select a date:</label>
                 <input type="date" id="date-picker" name="date" value="{{ date }}" onchange="document.getElementById('date-picker-form').submit();">
+                <div class ="pagination"> 
+                    <button type="button" id="prev-button">Previous</button>
+                    <button type="button" id="next-button">Next</button>
+                </div>
             </form>
+
+            <script>
+                document.getElementById('prev-button').addEventListener('click', function() {
+                    var datePicker = document.getElementById('date-picker');
+                    var date = new Date(datePicker.value);
+                    date.setDate(date.getDate() - 1);
+                    datePicker.value = date.toISOString().split('T')[0];
+                    document.getElementById('date-picker-form').submit();
+                });
+            
+                document.getElementById('next-button').addEventListener('click', function() {
+                    var datePicker = document.getElementById('date-picker');
+                    var date = new Date(datePicker.value);
+                    date.setDate(date.getDate() + 1);
+                    datePicker.value = date.toISOString().split('T')[0];
+                    document.getElementById('date-picker-form').submit();
+                });
+                </script>
            
             {% if isfuture %}
             {% if latte %}
