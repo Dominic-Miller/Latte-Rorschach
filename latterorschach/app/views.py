@@ -15,6 +15,8 @@ import logging
 
 logger = logging.getLogger("django.views")
 
+stored_date = datetime.now().date()
+
 @csrf_exempt
 @login_required
 def today(request):
@@ -48,13 +50,14 @@ def register(request):
             user.save()  # Save the new user
             return redirect('login')  # Redirect to login page after registration
         else:
-            return HttpResponse("Username exists.", status=400)  # Return error message
+            return render(request, 'errorpage.html', context = {'error_text': "Username Already Exists"})
     # Render the registration page
     return render(request, 'register.html')
 
 
 @csrf_exempt
 def user_login(request):
+    global stored_date
     if request.method == 'POST':
         username = request.POST.get('username', '')
         password = request.POST.get('password', '')
@@ -63,10 +66,11 @@ def user_login(request):
         if user is not None:
             login(request, user)  # Log in the user
             logger.info(f"{user.username} logged in")
+            stored_date = datetime.now().date()
             return redirect('/')  # Redirect to home page
         else:
             # Return an 'invalid login' error message.
-            messages.error(request, 'Invalid username or password.')  # Show error message
+            return render(request, 'errorpage.html', context = {'error_text': "Invalid Username or Password"})
     
     # Render the login page
     return render(request, 'login.html')
@@ -152,11 +156,14 @@ def add_latte(request):
 
 @csrf_exempt
 def topinterpretations(request):
-    current_date = datetime.now().date()  # Current date
+    global stored_date
     latte = Latte.objects.last()  # Get last Latte object
     date_str = request.GET.get('date', '')  # Get optional date parameter
-    date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else current_date
-
+    if not date_str:
+        date = stored_date
+    else:
+        date = datetime.strptime(date_str, '%Y-%m-%d').date()
+        stored_date = date
     interpretations = Interpretation.objects.filter(latte=latte, created_at__date=date)  # Filter by date
 
     yesterday_date = date - timedelta(days=1)  # Get yesterday's date
@@ -198,6 +205,7 @@ def topinterpretations(request):
                 user_like.delete()
             else:  # If not liked, add like
                 Like.objects.create(interpretation=interp, user=request.user).save()
+            return redirect('topinterpretations')
 
     # Render the top interpretations page
     return render(request, 'topInterpretations.html', context)
@@ -206,10 +214,10 @@ def topinterpretations(request):
 @csrf_exempt
 def menu(request):
     """View function for home page of site."""
-    if not request.user.is_authenticated:
-        username = 'Guest'  # Default username for unauthenticated users
 
     if request.method == 'POST':  # Handle logout request
+        global stored_date
+        stored_date = datetime.now().date()
         logout(request)  # Log out the current user
         return redirect('/login')  # Redirect to login
     
@@ -247,14 +255,14 @@ def changeusername(request):
         user = authenticate(username=original_username, password=original_password)  # Authenticate to ensure validity
         
         if user is None or user != current_user:  # Check if valid user
-            return HttpResponse("Invalid username or password for the current user.", status=400)  # Return error message
+            return render(request, 'errorpage.html', context = {'error_text': "Invalid username or password for the current user."})
         
         user.username = new_username  # Update the username
 
         try:
             user.save()  # Save the updated username
         except Exception as exception:
-            return HttpResponse(f"Error updating username: {str(exception)}", status=400)  # Handle exceptions
+            return render(request, 'errorpage.html', context = {'error_text': str(exception)})
         
         return redirect('/accountsettings')  # Redirect to account settings
     
@@ -274,13 +282,13 @@ def changepassword(request):
         user = authenticate(username=original_username, password=original_password)  # Authenticate user
         
         if user is None or user != current_user:  # Validate current user
-            return HttpResponse("Invalid username or password for the current user.", status=400)  # Return error message
+            return render(request, 'errorpage.html', context = {'error_text': "Invalid username or password for the current user."})
         
         if not new_password:  # Check for empty new password
-            return HttpResponse("New password cannot be empty.", status=400)  # Return error
+            return render(request, 'errorpage.html', context = {'error_text': "New password cannot be empty."})
         
         if new_password == original_password:  # Ensure passwords are different
-            return HttpResponse("New password shouldn't equal old password.", status=400)
+            return render(request, 'errorpage.html', context = {'error_text': "New password shouldn't equal old password."})
         
         user.set_password(new_password)  # Set the new password
         
@@ -288,17 +296,14 @@ def changepassword(request):
             user.save()  # Save the updated password
             login(request, user)  # Log the user back in after password change
         except Exception as exception:
-            return HttpResponse(f"Error updating password: {str(exception)}", status=400)  # Handle error
+            return render(request, 'errorpage.html', context = {'error_text': str(exception)})
         
         return redirect('/accountsettings')  # Redirect to account settings
     
     # Render the change password page
     return render(request, 'changepassword.html')
 
-
 @csrf_exempt
-@login_required
-def changecolor(request):
-    """Renders change color page"""
-    # Render the change color template
-    return render(request, 'changecolor.html')
+def errorpage(request):
+    """Renders error page"""
+    return render(request, 'errorpage.html')

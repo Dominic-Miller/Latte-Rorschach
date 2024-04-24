@@ -2,7 +2,7 @@
 <html>
 <head>
   <link rel="icon" href="/static/coffee_cup.png">
-<title>Account Settings</title>
+<title>Home</title>
 <style>
   /* Adds the coffee bean image to the background */
   body, html {
@@ -44,6 +44,7 @@
     margin: 8px auto;
     border-radius: 4px;
     cursor: pointer;
+    margin-top: 20px
   }
   .green-a:hover {
     background-color: #45a049;
@@ -106,22 +107,17 @@
 </style>
 </head>
 <body>
-    {% include 'menubutton.html' %} 
   <div style="display: grid;
       row-gap: 50px;
       position: absolute;
-      top: 50%;
+      top: 10%;
       left: 50%;
-      transform: translate(-50%, -50%);">
+      transform: translate(-50%, 0%);">
   <div class="home-box" style="grid-row: 1;">
-    <h2>Settings for {{ username }}</h2>
+    <h2>Error Detected ⚠️</h2>
+    <h2>Error Details: {{ error_text }}</h2>
     <div class="container">
-      <a class="gray-a" href="/history">See All Activity 📓</a>
-      <a class="gray-a" href="/changeusername">Change Username 😊</a>
-      <a class="gray-a" href="/changepassword">Change Password 🔒</a>
-      <form action="" method="post">
-        <input type="submit" value="Return Home 🏠">
-    </form>
+      <a class="green-a" href="/menu">Return Home 🏠</a>
     </div>
   </div>
 </div>

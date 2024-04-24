@@ -14,5 +14,5 @@ urlpatterns = [
     path('accountsettings', views.accountsettings, name='accountsettings'),
     path('changeusername', views.changeusername, name='changeusername'),
     path('changepassword', views.changepassword, name='changepassword'),
-    path('changecolor', views.changecolor, name='changecolor'),
+    path('errorpage', views.errorpage, name='errorpage'),
 ]
