@@ -121,7 +121,6 @@ def add_latte(request):
     return render(request, 'addlatte.html')
 
 @csrf_exempt
-@login_required
 def topinterpretations(request):
     current_date = datetime.now().date()  # Current date
     latte = Latte.objects.last()  # Get last Latte object
