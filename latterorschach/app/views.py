@@ -15,6 +15,8 @@ import logging
 
 logger = logging.getLogger("django.views")
 
+stored_date = datetime.now().date()
+
 @csrf_exempt
 @login_required
 def today(request):
@@ -55,6 +57,7 @@ def register(request):
 
 @csrf_exempt
 def user_login(request):
+    global stored_date
     if request.method == 'POST':
         username = request.POST.get('username', '')
         password = request.POST.get('password', '')
@@ -63,6 +66,7 @@ def user_login(request):
         if user is not None:
             login(request, user)  # Log in the user
             logger.info(f"{user.username} logged in")
+            stored_date = datetime.now().date()
             return redirect('/')  # Redirect to home page
         else:
             # Return an 'invalid login' error message.
@@ -122,11 +126,14 @@ def add_latte(request):
 
 @csrf_exempt
 def topinterpretations(request):
-    current_date = datetime.now().date()  # Current date
+    global stored_date
     latte = Latte.objects.last()  # Get last Latte object
     date_str = request.GET.get('date', '')  # Get optional date parameter
-    date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else current_date
-
+    if not date_str:
+        date = stored_date
+    else:
+        date = datetime.strptime(date_str, '%Y-%m-%d').date()
+        stored_date = date
     interpretations = Interpretation.objects.filter(latte=latte, created_at__date=date)  # Filter by date
 
     yesterday_date = date - timedelta(days=1)  # Get yesterday's date
@@ -168,6 +175,7 @@ def topinterpretations(request):
                 user_like.delete()
             else:  # If not liked, add like
                 Like.objects.create(interpretation=interp, user=request.user).save()
+            return redirect('topinterpretations')
 
     # Render the top interpretations page
     return render(request, 'topInterpretations.html', context)
@@ -178,6 +186,8 @@ def menu(request):
     """View function for home page of site."""
 
     if request.method == 'POST':  # Handle logout request
+        global stored_date
+        stored_date = datetime.now().date()
         logout(request)  # Log out the current user
         return redirect('/login')  # Redirect to login
     
@@ -265,6 +275,5 @@ def changepassword(request):
 
 @csrf_exempt
 def errorpage(request):
-    """Renders change color page"""
-    # Render the change color template
+    """Renders error page"""
     return render(request, 'errorpage.html')
