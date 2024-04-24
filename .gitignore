@@ -5,3 +5,4 @@ __pycache__/
 *.pyc
 *.pyc
 venv/pyvenv.cfg
+latterorschach/db.sqlite3
