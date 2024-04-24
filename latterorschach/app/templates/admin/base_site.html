@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }} | {{ site_title|default:_('Django site admin') }}</title>
+    <link rel="icon" href="/static/coffee_cup.png">
+    
+    <!-- Include Django's default CSS and JS for admin functionality -->
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/base.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/dashboard.css' %}">
+
+    <!-- Custom styles -->
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: #444;
+            background: url('/static/coffee.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+        
+        .home-box {
+            padding: 20px;
+            background: #fffefe;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            width: 300px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #5D4037;
+            margin-bottom: 20px;
+        }
+
+        a {
+            text-decoration: none;
+        }
+        
+        .container {
+            padding: 0;
+        }
+        
+        input[type=submit] {
+            width: 100%;
+            background-color: #ea534d;
+            color: white;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        
+        input[type=submit]:hover {
+            background-color: #b6403c;
+        }
+    </style>
+    
+    {% block extrahead %}{{ block.super }}{% endblock %}
+</head>
+<body>
+    <div id="container">
+        <div id="header">
+            <h1>{{ site_header|default:_('Django Administration') }}</h1>
+            <div id="breadcrumbs">
+                {% block breadcrumbs %}{{ block.super }}{% endblock %}
+            </div>
+        </div>
+        
+        <div id="content" class="home-box">
+            {% block content %}
+            <h2>Welcome to the Admin Dashboard</h2>
+            <div class="container">
+                <a class="green-a" href="/">Home</a>
+                <a class="gray-a" href="/admin/">Admin Home</a>
+                <a class="gray-a" href="/logout/">Log Out</a>
+            </div>
+            {% endblock %}
+        </div>
+        
+        <div id="footer">
+            {% block footer %}{{ block.super }}{% endblock %}
+        </div>
+    </div>
+    
+    <!-- Django admin scripts -->
+    <script src="{% static 'admin/js/core.js' %}"></script>
+    <script src="{% static 'admin/js/actions.js' %}"></script>
+    <script src="{% static 'admin/js/related-widget-wrapper.js' %}"></script>
+    <script src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+    <script src="{% static 'admin/js/vendor/xregexp/xregexp.js' %}"></script>
+</body>
+</html>
