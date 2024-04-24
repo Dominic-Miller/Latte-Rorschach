@@ -118,7 +118,37 @@ def history(request):
 @csrf_exempt
 def add_latte(request):
     """Add new latte object to database"""
-    return render(request, 'addlatte.html')
+
+    current_date = datetime.now().date()
+    current_date_str = current_date.strftime('%Y-%m-%d')
+
+    if request.method == 'POST':
+        image_url = request.POST.get('imageurl', '')
+        image_date = request.POST.get('date', '')
+
+        logger.info(f"url: {image_url}")
+        logger.info(f"date: {image_date}")
+
+        # store to check if inage is already stored for date
+        if image_date:
+            date = Latte.objects.filter(date=image_date)
+        
+        if image_url and image_date and not date:
+            latte = Latte.objects.create(
+                # use default for id
+                date = image_date,
+                img_url = image_url,
+                user = request.user
+            )
+            latte.save()
+            return redirect('/menu')
+        
+    # pass in current date to display on date picker   
+    context = {
+        'date': current_date_str,
+    }
+
+    return render(request, 'addLatte.html', context)
 
 @csrf_exempt
 def topinterpretations(request):
