@@ -34,6 +34,16 @@
             margin-bottom: 20px;
         }
 
+        .date-pick {
+            width: 100px;
+            padding: 10px;
+            margin-bottom: 15px;
+            background: #fffefe;
+            border-radius: 8px;
+            text-align: center;
+            border-width: thin;
+        }
+
         /* Styles the review input field */
         input[type=text] {
             width: calc(100% - 40px);
@@ -70,7 +80,7 @@
   <div class="center-content">
     <h2>Add Latte</h2>
     <form action="" method="post">
-        <input type="date" value="{{ date }}" id="date" name="date">
+        <input type="date" class="date-pick" value="{{ date }}" id="date" name="date">
         <input type="text" name="imageurl" placeholder="Add Image URL" class="large-input">
         <input type="submit" value="Submit">
     </form>
