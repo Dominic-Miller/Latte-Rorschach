@@ -187,12 +187,21 @@ def topinterpretations(request):
     else:
         currentdate = datetime.strptime(date_str, '%Y-%m-%d').date()
         stored_date = currentdate
+    isfuture = False
     
-    try:
-        latte = Latte.objects.get(date=currentdate)
-    except:
+    if currentdate > datetime.now().date():
+        isfuture = True
+    else:
+        isfuture = False
+    
+    if (not isfuture) or (request.user.is_superuser or request.user.is_staff):
+        try:
+            latte = Latte.objects.get(date=currentdate)
+        except:
+            latte = None
+    else:
         latte = None
-    
+
     interpretations = Interpretation.objects.filter(latte=latte)  # Filter by date
 
     yesterday_date = currentdate - timedelta(days=1)  # Get yesterday's date
@@ -222,6 +231,7 @@ def topinterpretations(request):
         'interpretations': interps_list,
         'date': current_date_str,  # Pass formatted dates
         'yesterday_date': yesterday_date_str,
+        'isfuture': isfuture,
     }
 
     if request.method == 'POST':  # Handle like/unlike logic

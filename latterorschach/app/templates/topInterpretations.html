@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -113,6 +115,10 @@
         <div class="latte-container panel" style="float:left;" >
             <img src="{{ latte.img_url }}" alt="Rorschach of the day">
         </div>
+        {% elif isfuture %}
+        <div class="latte-container panel" style="float:left;" >
+            <img src="{% static 'comingsoon.jpg' %}" alt="Rorschach of the day">
+        </div>
         {% endif %}
         <div class="interpretations-container panel" style="float:right;" >
             <form action="" method="GET" id="date-picker-form">
@@ -120,8 +126,16 @@
                 <input type="date" id="date-picker" name="date" value="{{ date }}" onchange="document.getElementById('date-picker-form').submit();">
             </form>
            
-        
+            {% if isfuture %}
+            {% if latte %}
+            <h1 class="Interpretations"> Top secret Admin preview! </h1>
+            {% else %}
+            <h1 class="Interpretations"> This latte isn't ready yet, come back later! </h1>
+            {% endif %}
+            {% else %}
             <h1 class="Interpretations"> Interpretation History </h1>
+            {% endif %}
+
             {% for x in interpretations %}
                 <div style="  display: flex; align-items: center; ">
                     {% if user.is_authenticated %}
