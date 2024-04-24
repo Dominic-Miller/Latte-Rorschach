@@ -90,13 +90,20 @@
   <div class="center-content">
     <h2>Today's Rorschach Latte</h2>
     <img src="{{ latte.img_url }}" alt="Rorschach of the day">
+    {% if posted %}
+    <h4 style="color: green;">You've Already Posted Your Daily Interpretation!</h4>
+    <a href="/topinterpretations">
+        <button class="link-button">Show me today's best answers</button>
+    </a>
+    {% else %}
     <form action="" method="post">
         <input type="text" name="response" placeholder="What do you see?" class="large-input">
         <input type="submit" value="Submit">
     </form>
-        <a href="/topinterpretations">
-            <button class="link-button">Show me what others said</button>
-        </a>
+    <a href="/topinterpretations">
+        <button class="link-button">Show me what other users posted</button>
+    </a>
+    {% endif %}
 </div>
 </body>
 </html>

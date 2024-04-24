@@ -28,6 +28,11 @@ def today(request):
         stored_date = datetime.now().date()
         latte = None
     
+    posted_already = False
+
+    if Interpretation.objects.filter(latte=latte, user=request.user).exists():
+        posted_already = True
+
     if request.method == 'POST' and latte:
         response = request.POST.get('response', '')
         if response:  # Only proceed if the response is not empty
@@ -42,7 +47,7 @@ def today(request):
             return redirect('topinterpretations')  # Redirect to top interpretations after POST
 
     # Render the daily review template
-    return render(request, 'dailyReview.html', {'latte': latte})
+    return render(request, 'dailyReview.html', {'latte': latte, 'posted' : posted_already})
 
 
 @csrf_exempt
