@@ -48,7 +48,7 @@ def register(request):
             user.save()  # Save the new user
             return redirect('login')  # Redirect to login page after registration
         else:
-            return HttpResponse("Username exists.", status=400)  # Return error message
+            return render(request, 'errorpage.html', context = {'error_text': "Username Already Exists"})
     # Render the registration page
     return render(request, 'register.html')
 
@@ -66,7 +66,7 @@ def user_login(request):
             return redirect('/')  # Redirect to home page
         else:
             # Return an 'invalid login' error message.
-            messages.error(request, 'Invalid username or password.')  # Show error message
+            return render(request, 'errorpage.html', context = {'error_text': "Invalid Username or Password"})
     
     # Render the login page
     return render(request, 'login.html')
@@ -177,8 +177,6 @@ def topinterpretations(request):
 @csrf_exempt
 def menu(request):
     """View function for home page of site."""
-    if not request.user.is_authenticated:
-        username = 'Guest'  # Default username for unauthenticated users
 
     if request.method == 'POST':  # Handle logout request
         logout(request)  # Log out the current user
@@ -218,14 +216,14 @@ def changeusername(request):
         user = authenticate(username=original_username, password=original_password)  # Authenticate to ensure validity
         
         if user is None or user != current_user:  # Check if valid user
-            return HttpResponse("Invalid username or password for the current user.", status=400)  # Return error message
+            return render(request, 'errorpage.html', context = {'error_text': "Invalid username or password for the current user."})
         
         user.username = new_username  # Update the username
 
         try:
             user.save()  # Save the updated username
         except Exception as exception:
-            return HttpResponse(f"Error updating username: {str(exception)}", status=400)  # Handle exceptions
+            return render(request, 'errorpage.html', context = {'error_text': str(exception)})
         
         return redirect('/accountsettings')  # Redirect to account settings
     
@@ -245,13 +243,13 @@ def changepassword(request):
         user = authenticate(username=original_username, password=original_password)  # Authenticate user
         
         if user is None or user != current_user:  # Validate current user
-            return HttpResponse("Invalid username or password for the current user.", status=400)  # Return error message
+            return render(request, 'errorpage.html', context = {'error_text': "Invalid username or password for the current user."})
         
         if not new_password:  # Check for empty new password
-            return HttpResponse("New password cannot be empty.", status=400)  # Return error
+            return render(request, 'errorpage.html', context = {'error_text': "New password cannot be empty."})
         
         if new_password == original_password:  # Ensure passwords are different
-            return HttpResponse("New password shouldn't equal old password.", status=400)
+            return render(request, 'errorpage.html', context = {'error_text': "New password shouldn't equal old password."})
         
         user.set_password(new_password)  # Set the new password
         
@@ -259,17 +257,15 @@ def changepassword(request):
             user.save()  # Save the updated password
             login(request, user)  # Log the user back in after password change
         except Exception as exception:
-            return HttpResponse(f"Error updating password: {str(exception)}", status=400)  # Handle error
+            return render(request, 'errorpage.html', context = {'error_text': str(exception)})
         
         return redirect('/accountsettings')  # Redirect to account settings
     
     # Render the change password page
     return render(request, 'changepassword.html')
 
-
 @csrf_exempt
-@login_required
-def changecolor(request):
+def errorpage(request):
     """Renders change color page"""
     # Render the change color template
-    return render(request, 'changecolor.html')
+    return render(request, 'errorpage.html')
