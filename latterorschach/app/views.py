@@ -135,20 +135,32 @@ def add_latte(request):
         logger.info(f"date: {image_date}")
 
         # store to check if image is already stored for date
+
         if image_date:
             date = Latte.objects.filter(date=image_date)
+
+        # error check for valid date, image exists, and if date is not already used
+
+        if not image_date:
+            return render(request, 'errorpage.html', context = {'error_text': "Invalid date entered"})
         
-        if image_url and image_date and not date:
-            latte = Latte.objects.create(
-                # use default for id
-                date = image_date,
-                img_url = image_url,
-                user = request.user
-            )
-            latte.save()
-            return redirect('/menu')
+        if not image_url:
+            return render(request, 'errorpage.html', context = {'error_text': "Invalid image URL entered"})
         
-    # pass in current date to display on date picker   
+        if date:
+            return render(request, 'errorpage.html', context = {'error_text': "Image already exists for entered date"})
+        
+        latte = Latte.objects.create(
+            # use default for id
+            date = image_date,
+            img_url = image_url,
+            user = request.user
+        )
+        latte.save()
+        return redirect('/menu')
+        
+    # pass in current date to display on date picker
+
     context = {
         'date': current_date_str,
     }
