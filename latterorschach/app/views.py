@@ -133,7 +133,7 @@ def add_latte(request):
         logger.info(f"url: {image_url}")
         logger.info(f"date: {image_date}")
 
-        # store to check if inage is already stored for date
+        # store to check if image is already stored for date
         if image_date:
             date = Latte.objects.filter(date=image_date)
         
