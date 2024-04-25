@@ -6,7 +6,15 @@ Latte Rorschach is a web page where visitors are presented with an image of latt
 
 ## User Manual
 ### Compilation & Execution
-First navigate to the latterorschach folder:
+First navigate to the Latte-Rorschach folder:
+```bash
+cd Latte-Rorschach
+```
+Next activate the virtual environment:
+```bash
+venv\Scripts\activate
+```
+Then navigate to the latterorschach folder:
 ```bash
 cd latterorschach
 ```
