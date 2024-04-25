@@ -18,11 +18,11 @@ Then navigate to the latterorschach folder:
 ```bash
 cd latterorschach
 ```
-Now run the program locally:
+Now run the program locally with your python interpreter, for example:
 ```bash
-python3 manage.py runserver
+python manage.py runserver
 ```
-This will run the program in the web browser displayed (looks like an IP address)
+Navigate to the IP:port given in the output in your web browser. The default is `localhost:8000/`.
 
 ## Libraries & Resources
 ### Main Resources
