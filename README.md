@@ -32,4 +32,4 @@ This will run the program in the web browser displayed (looks like an IP address
  - React:
     - Chelsea, Alec
  - HTML/CSS:
-    - Alec, Aaron, Dominic
+    - Alec, Aaron, Dominic, Chelsea
