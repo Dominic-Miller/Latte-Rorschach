@@ -36,15 +36,24 @@ This will run the program in the web browser displayed (looks like an IP address
 
 ## Separation of Work
 ### Backend:
- - Django Server & Flask:
+ - Django Server:
     - Alec, Dominic, Aaron, Chelsea, Ethan
- - SQL Database:
-    - Ethan, Aaron
- - Latte CDN:
-    - Ethan, Dominic
+ - Data Models and Database Operations:
+    - Ethan, Aaron, Alec, Chelsea, Dominic
 
 ### Frontend:
- - React:
-    - Chelsea, Alec
  - HTML/CSS:
-    - Alec, Aaron, Dominic, Chelsea
+    - Alec, Aaron, Dominic, Chelsea, Ethan
+ - User Content:
+    - pokemon_guy99
+
+### Requirements Satisfaction:
+- Information Management(RBAC):
+    - Django User System, Login/Logout functionailty with roles:
+         - Guest
+         - Standard User
+         - Admin
+- Secure Computing:
+    - Django Password Encryption and User system 😴
+- Distributed Computing:
+    - Django is a web framework, so this app is capable of being deployed to a web server for distributed user interaction with one database
