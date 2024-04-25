@@ -25,7 +25,14 @@ python3 manage.py runserver
 This will run the program in the web browser displayed (looks like an IP address)
 
 ## Libraries & Resources
-[empty]
+### Main Resources
+ - Django
+ - Python3
+    - datetime
+    - random
+    - uuid
+
+
 
 ## Separation of Work
 ### Backend:
